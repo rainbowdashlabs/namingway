@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.ThreadLocalRandom;
+import static java.util.concurrent.ThreadLocalRandom.current;
 
 public class MentionListener extends ListenerAdapter {
     private final JacksonConfig<ConfigFile> config;
@@ -59,7 +59,12 @@ public class MentionListener extends ListenerAdapter {
     }
 
     private void diceNames(Member first, Member second) {
-        if (ThreadLocalRandom.current().nextDouble(1) >= 0.5) {
+        if(current().nextDouble() <= 0.1){
+            // Bring back a lost name
+            switchNames(config.secondary(Users.KEY).randomName(), current().nextDouble() >= 0.5 ? first : second);
+            return;
+        }
+        if (current().nextDouble() >= 0.5) {
             switchNames(first, second);
         } else {
             switchNames(second, first);
@@ -69,7 +74,11 @@ public class MentionListener extends ListenerAdapter {
     private void switchNames(Member nameProvider, Member target) {
         if (target.getUser().isBot()) return;
         if (nameProvider.getUser().isBot()) return;
-        String newName = nameProvider.getEffectiveName();
+        switchNames(nameProvider.getEffectiveName(), target);
+    }
+
+    private void switchNames(String newName, Member target) {
+        if (target.getUser().isBot()) return;
         try (var wrapper = config.secondaryWrapped(Users.KEY)) {
             wrapper.config().addIfAbsent(target);
             target.modifyNickname(newName).queue(RestAction.getDefaultSuccess(), Consumers.empty());

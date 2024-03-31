@@ -7,9 +7,11 @@ import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.Member;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Users {
     public static ConfigKey<Users> KEY = ConfigKey.of(
@@ -37,5 +39,9 @@ public class Users {
 
     public void rolledBack(Long id) {
         names.remove(id);
+    }
+
+    public String randomName() {
+        return new ArrayList<>(names.values()).get(ThreadLocalRandom.current().nextInt(names.values().size()));
     }
 }
