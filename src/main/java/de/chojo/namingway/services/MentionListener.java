@@ -61,6 +61,7 @@ public class MentionListener extends ListenerAdapter {
 
     private void switchNames(Member nameProvider, Member target) {
         if(target.getUser().isBot()) return;
+        if(nameProvider.getUser().isBot()) return;
         String newName = nameProvider.getEffectiveName();
         try (var wrapper = config.secondaryWrapped(Users.KEY)) {
             wrapper.config().addIfAbsent(target);
