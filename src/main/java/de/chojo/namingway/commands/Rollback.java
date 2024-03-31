@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TransferQueue;
 
 public class Rollback implements SlashProvider<Slash>, SlashHandler {
     private final JacksonConfig<ConfigFile> config;
@@ -45,6 +44,10 @@ public class Rollback implements SlashProvider<Slash>, SlashHandler {
         }
         if (active) {
             event.reply("Rollback already in progress").setEphemeral(true).queue();
+            return;
+        }
+        if (config.main().active()) {
+            event.reply("Set state to inactive first.").setEphemeral(true).queue();
             return;
         }
         active = true;
