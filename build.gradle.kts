@@ -68,7 +68,7 @@ tasks {
         transform(Log4j2PluginsCacheFileTransformer::class.java)
         mergeServiceFiles()
         manifest {
-            attributes(mapOf("Main-Class" to "de.chojo.lyna.Lyna"))
+            attributes(mapOf("Main-Class" to "de.chojo.namingway.Namingway"))
         }
     }
 
