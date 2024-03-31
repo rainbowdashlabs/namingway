@@ -13,6 +13,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class MentionListener extends ListenerAdapter {
     private final JacksonConfig<ConfigFile> config;
 
@@ -32,7 +34,7 @@ public class MentionListener extends ListenerAdapter {
         if (message.getType() == MessageType.INLINE_REPLY) {
             if (message.getReferencedMessage() == null) return;
             if (message.getReferencedMessage().getMember() == null) return;
-            switchNames(event.getMember(), message.getReferencedMessage().getMember());
+            diceNames(event.getMember(), message.getReferencedMessage().getMember());
             return;
         }
 
@@ -45,7 +47,15 @@ public class MentionListener extends ListenerAdapter {
                 // ignore
                 return;
             }
-            switchNames(event.getMember(), member);
+            diceNames(event.getMember(), member);
+        }
+    }
+
+    private void diceNames(Member first, Member second){
+        if(ThreadLocalRandom.current().nextDouble(1) >= 0.5){
+            switchNames(first, second);
+        }else {
+            switchNames(second, first);
         }
     }
 
