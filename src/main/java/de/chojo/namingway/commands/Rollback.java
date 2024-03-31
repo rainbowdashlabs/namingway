@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TransferQueue;
 
 public class Rollback implements SlashProvider<Slash>, SlashHandler {
     private final JacksonConfig<ConfigFile> config;
@@ -42,16 +43,24 @@ public class Rollback implements SlashProvider<Slash>, SlashHandler {
             event.reply("Please confirm").setEphemeral(true).queue();
             return;
         }
+        if (active) {
+            event.reply("Rollback already in progress").setEphemeral(true).queue();
+            return;
+        }
+        active = true;
+        event.reply("Rollback in progress").setEphemeral(true).queue();
         Map<Long, String> names = config.secondary(Users.KEY).names();
         names = new HashMap<>(names);
         Guild guild = event.getGuild();
         for (var entry : names.entrySet()) {
-            try {
+            try (var users = config.secondaryWrapped(Users.KEY)) {
                 Member complete = guild.retrieveMemberById(entry.getKey()).complete();
                 complete.modifyNickname(entry.getValue()).complete();
+                users.config().rolledBack(entry.getKey());
             } catch (Exception e) {
                 // ignore
             }
         }
+        active = false;
     }
 }
