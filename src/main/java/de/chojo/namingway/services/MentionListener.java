@@ -24,7 +24,7 @@ public class MentionListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if(!config.main().active()) return;
+        if (!config.main().active()) return;
 
         Message message = event.getMessage();
         if (!message.isFromGuild()) return;
@@ -33,8 +33,15 @@ public class MentionListener extends ListenerAdapter {
 
         if (message.getType() == MessageType.INLINE_REPLY) {
             if (message.getReferencedMessage() == null) return;
-            if (message.getReferencedMessage().getMember() == null) return;
-            diceNames(event.getMember(), message.getReferencedMessage().getMember());
+            Member referenced;
+            try {
+                referenced = event.getGuild().retrieveMember(message.getReferencedMessage().getAuthor()).complete();
+            } catch (Exception e) {
+                // ignore
+                return;
+            }
+            if (referenced == null) return;
+            diceNames(event.getMember(), referenced);
             return;
         }
 
@@ -51,17 +58,17 @@ public class MentionListener extends ListenerAdapter {
         }
     }
 
-    private void diceNames(Member first, Member second){
-        if(ThreadLocalRandom.current().nextDouble(1) >= 0.5){
+    private void diceNames(Member first, Member second) {
+        if (ThreadLocalRandom.current().nextDouble(1) >= 0.5) {
             switchNames(first, second);
-        }else {
+        } else {
             switchNames(second, first);
         }
     }
 
     private void switchNames(Member nameProvider, Member target) {
-        if(target.getUser().isBot()) return;
-        if(nameProvider.getUser().isBot()) return;
+        if (target.getUser().isBot()) return;
+        if (nameProvider.getUser().isBot()) return;
         String newName = nameProvider.getEffectiveName();
         try (var wrapper = config.secondaryWrapped(Users.KEY)) {
             wrapper.config().addIfAbsent(target);
