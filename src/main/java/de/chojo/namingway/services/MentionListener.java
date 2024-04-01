@@ -46,15 +46,17 @@ public class MentionListener extends ListenerAdapter {
         }
 
         if (!message.getMentions().getMentions(Message.MentionType.USER).isEmpty()) {
-            IMentionable iMentionable = message.getMentions().getMentions(Message.MentionType.USER).get(0);
-            Member member;
-            try {
-                member = event.getGuild().retrieveMemberById(iMentionable.getIdLong()).complete();
-            } catch (Exception e) {
-                // ignore
-                return;
+            for (IMentionable mention : message.getMentions().getMentions(Message.MentionType.USER)) {
+                if (mention.getIdLong() == event.getAuthor().getIdLong()) continue;
+                Member member;
+                try {
+                    member = event.getGuild().retrieveMemberById(mention.getIdLong()).complete();
+                } catch (Exception e) {
+                    // ignore
+                    return;
+                }
+                diceNames(event.getMember(), member);
             }
-            diceNames(event.getMember(), member);
         }
     }
 
