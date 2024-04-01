@@ -59,7 +59,7 @@ public class MentionListener extends ListenerAdapter {
     }
 
     private void diceNames(Member first, Member second) {
-        if (current().nextDouble() <= 0.1) {
+        if (current().nextDouble() <= 0.2) {
             // Bring back a lost name
             switchNames(config.secondary(Users.KEY).randomName(), current().nextDouble() >= 0.5 ? first : second);
             return;
