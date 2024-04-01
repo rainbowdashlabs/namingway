@@ -81,7 +81,9 @@ public class MentionListener extends ListenerAdapter {
         if (target.getUser().isBot()) return;
         try (var wrapper = config.secondaryWrapped(Users.KEY)) {
             wrapper.config().addIfAbsent(target);
-            target.modifyNickname(newName).queue(RestAction.getDefaultSuccess(), Consumers.empty());
+            if (target.getGuild().getSelfMember().canInteract(target)) {
+                target.modifyNickname(newName).queue(RestAction.getDefaultSuccess(), Consumers.empty());
+            }
         }
     }
 }
