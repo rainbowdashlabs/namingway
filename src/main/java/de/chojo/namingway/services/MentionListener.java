@@ -42,7 +42,6 @@ public class MentionListener extends ListenerAdapter {
             }
             if (referenced == null) return;
             diceNames(event.getMember(), referenced);
-            return;
         }
 
         if (!message.getMentions().getMentions(Message.MentionType.USER).isEmpty()) {
