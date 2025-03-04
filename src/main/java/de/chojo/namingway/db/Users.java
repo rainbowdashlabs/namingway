@@ -1,8 +1,8 @@
 package de.chojo.namingway.db;
 
-import de.chojo.jdautil.configuratino.Configuration;
+import de.chojo.jdautil.configuration.Configuration;
 import de.chojo.jdautil.util.SysVar;
-import de.chojo.namingway.util.config.ConfigKey;
+import dev.chojo.ocular.key.Key;
 import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.Member;
 
@@ -14,11 +14,10 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Users {
-    public static ConfigKey<Users> KEY = ConfigKey.of(
-            "users",
+    public static Key<Users> KEY = Key.builder(
             Path.of(SysVar.get("bot.usersdb", "BOT_USERS_DB").orElse("config/users.yaml")),
-            Users.class,
-            Users::new);
+            Users::new)
+            .build();
     private Map<Long, String> names = new HashMap<>();
 
     public static Configuration<Users> load() {

@@ -7,7 +7,7 @@ import de.chojo.jdautil.interactions.slash.structure.handler.SlashHandler;
 import de.chojo.jdautil.wrapper.EventContext;
 import de.chojo.namingway.configuration.ConfigFile;
 import de.chojo.namingway.db.Users;
-import de.chojo.namingway.util.config.JacksonConfig;
+import dev.chojo.ocular.Configurations;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,22 +17,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Rollback implements SlashProvider<Slash>, SlashHandler {
-    private final JacksonConfig<ConfigFile> config;
+    private final Configurations<ConfigFile> config;
     private boolean active = false;
 
-    public Rollback(JacksonConfig<ConfigFile> config) {
+    public Rollback(Configurations<ConfigFile> config) {
         this.config = config;
     }
 
     @Override
     public Slash slash() {
         return Slash.of("rollback", "Rollback name changes")
-                .adminCommand()
-                .unlocalized()
-                .guildOnly()
-                .command(this)
-                .argument(Argument.bool("confirm", "true to confirm").asRequired())
-                .build();
+                    .adminCommand()
+                    .unlocalized()
+                    .guildOnly()
+                    .command(this)
+                    .argument(Argument.bool("confirm", "true to confirm").asRequired())
+                    .build();
     }
 
     @Override

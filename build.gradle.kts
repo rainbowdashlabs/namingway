@@ -17,7 +17,7 @@ repositories {
 dependencies {
 
         //discord
-    implementation("de.chojo", "cjda-util", "2.9.6+beta.19") {
+    implementation("de.chojo", "cjda-util", "2.10.3+jda-5.1.0") {
         exclude(group = "club.minnced", module = "opus-java")
     }
 
@@ -26,6 +26,8 @@ dependencies {
     implementation("de.chojo", "log-util", "1.0.1") {
         exclude("org.apache.logging.log4j")
     }
+
+    implementation("dev.chojo", "ocular", "1.0.1")
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")

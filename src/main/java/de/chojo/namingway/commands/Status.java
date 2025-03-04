@@ -6,26 +6,26 @@ import de.chojo.jdautil.interactions.slash.provider.SlashProvider;
 import de.chojo.jdautil.interactions.slash.structure.handler.SlashHandler;
 import de.chojo.jdautil.wrapper.EventContext;
 import de.chojo.namingway.configuration.ConfigFile;
-import de.chojo.namingway.util.config.JacksonConfig;
+import dev.chojo.ocular.Configurations;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 public class Status implements SlashProvider<Slash>, SlashHandler {
-    private final JacksonConfig<ConfigFile> config;
+    private final Configurations<ConfigFile> config;
 
-    public Status(JacksonConfig<ConfigFile> config) {
+    public Status(Configurations<ConfigFile> config) {
         this.config = config;
     }
 
     @Override
     public Slash slash() {
         return Slash.of("status", "Set the bot status")
-                .adminCommand()
-                .guildOnly()
-                .unlocalized()
-                .command(this)
-                .argument(Argument.bool("active", "active or not").asRequired())
-                .build();
+                    .adminCommand()
+                    .guildOnly()
+                    .unlocalized()
+                    .command(this)
+                    .argument(Argument.bool("active", "active or not").asRequired())
+                    .build();
     }
 
     @Override

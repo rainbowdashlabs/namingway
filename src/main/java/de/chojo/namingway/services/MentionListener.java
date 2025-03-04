@@ -3,7 +3,7 @@ package de.chojo.namingway.services;
 import de.chojo.jdautil.util.Consumers;
 import de.chojo.namingway.configuration.ConfigFile;
 import de.chojo.namingway.db.Users;
-import de.chojo.namingway.util.config.JacksonConfig;
+import dev.chojo.ocular.Configurations;
 import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -16,9 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import static java.util.concurrent.ThreadLocalRandom.current;
 
 public class MentionListener extends ListenerAdapter {
-    private final JacksonConfig<ConfigFile> config;
+    private final Configurations<ConfigFile> config;
 
-    public MentionListener(JacksonConfig<ConfigFile> config) {
+    public MentionListener(Configurations<ConfigFile> config) {
         this.config = config;
     }
 

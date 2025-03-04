@@ -1,17 +1,15 @@
 package de.chojo.namingway.configuration;
 
-import de.chojo.jdautil.configuratino.Configuration;
 import de.chojo.jdautil.util.SysVar;
-import de.chojo.namingway.util.config.ConfigKey;
+import dev.chojo.ocular.key.Key;
 
 import java.nio.file.Path;
 
 public class ConfigFile {
-    public static ConfigKey<ConfigFile> KEY = ConfigKey.of(
-            "config",
-            Path.of(SysVar.get("bot.config", "BOT_CONFIG").orElse("config/config.yaml")),
-            ConfigFile.class,
-            ConfigFile::new);
+    public static Key<ConfigFile> KEY = Key.builder(
+                                                   Path.of(SysVar.get("bot.config", "BOT_CONFIG").orElse("config/config.yaml")),
+                                                   ConfigFile::new)
+                                           .build();
     private String token = "";
     private boolean active = false;
 

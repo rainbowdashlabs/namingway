@@ -6,7 +6,8 @@ import de.chojo.namingway.commands.Status;
 import de.chojo.namingway.configuration.ConfigFile;
 import de.chojo.namingway.services.MentionListener;
 import de.chojo.namingway.util.Threading;
-import de.chojo.namingway.util.config.JacksonConfig;
+import dev.chojo.ocular.Configurations;
+import dev.chojo.ocular.dataformats.YamlDataFormat;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
@@ -24,7 +25,7 @@ public class Namingway {
 
 
     public void start() {
-        JacksonConfig<ConfigFile> config = new JacksonConfig<>(ConfigFile.KEY);
+        Configurations<ConfigFile> config = Configurations.builder(ConfigFile.KEY, new YamlDataFormat()).build();
         shardManager = DefaultShardManagerBuilder.createDefault(config.main().token())
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
                 .setEnableShutdownHook(false)
