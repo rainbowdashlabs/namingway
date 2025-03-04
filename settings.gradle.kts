@@ -4,7 +4,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             // misc
-            library("jetbrains-annotations", "org.jetbrains:annotations:24.1.0")
+            library("jetbrains-annotations", "org.jetbrains:annotations:26.0.2")
 
             version("log4j", "2.22.1")
 
