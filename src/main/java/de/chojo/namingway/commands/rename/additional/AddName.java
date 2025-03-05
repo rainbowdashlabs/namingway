@@ -18,8 +18,7 @@ public class AddName implements SlashHandler {
     public void onSlashCommand(SlashCommandInteractionEvent event, EventContext context) {
         try (var conf = config.secondaryWrapped(Users.KEY)){
             conf.config().addAdditionalName(event.getOption("name").getAsString());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
+        event.reply("Name added").setEphemeral(true).queue();
     }
 }

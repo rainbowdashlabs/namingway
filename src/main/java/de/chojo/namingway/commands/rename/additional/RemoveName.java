@@ -29,10 +29,7 @@ public class RemoveName implements SlashHandler {
             } else {
                 event.reply("Name removed").setEphemeral(true).queue();
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
-
     }
 
     @Override

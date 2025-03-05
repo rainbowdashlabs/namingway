@@ -17,6 +17,6 @@ public class ListNames implements SlashHandler {
     @Override
     public void onSlashCommand(SlashCommandInteractionEvent event, EventContext context) {
         String join = String.join("\n", config.secondary(Users.KEY).additionalNames());
-        event.reply(join).setEphemeral(true).queue();
+        event.reply("Names:\n" + join).setEphemeral(true).queue();
     }
 }
