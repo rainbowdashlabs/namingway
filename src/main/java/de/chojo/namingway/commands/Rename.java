@@ -6,6 +6,7 @@ import de.chojo.namingway.commands.rename.Channel;
 import de.chojo.namingway.commands.rename.Role;
 import de.chojo.namingway.commands.rename.additional.AddName;
 import de.chojo.namingway.commands.rename.additional.ListNames;
+import de.chojo.namingway.commands.rename.additional.RemoveName;
 import de.chojo.namingway.commands.rename.list.ChannelList;
 import de.chojo.namingway.commands.rename.list.RoleList;
 import de.chojo.namingway.configuration.ConfigFile;
@@ -49,7 +50,10 @@ public class Rename implements SlashProvider<Slash> {
                                     .handler(new AddName(config))
                                     .argument(text("name", "name to add").asRequired()))
                             .subCommand(sub("list", "List of additional names")
-                                    .handler(new ListNames(config))))
+                                    .handler(new ListNames(config)))
+                            .subCommand(sub("remove", "Remove an additional name")
+                                    .handler(new RemoveName(config))
+                                    .argument(text("name", "name to remove").asRequired().withAutoComplete())))
                     .build();
     }
 }
