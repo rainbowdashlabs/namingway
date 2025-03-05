@@ -4,6 +4,8 @@ import de.chojo.jdautil.interactions.slash.Slash;
 import de.chojo.jdautil.interactions.slash.provider.SlashProvider;
 import de.chojo.namingway.commands.rename.Channel;
 import de.chojo.namingway.commands.rename.Role;
+import de.chojo.namingway.commands.rename.additional.AddName;
+import de.chojo.namingway.commands.rename.additional.ListNames;
 import de.chojo.namingway.commands.rename.list.ChannelList;
 import de.chojo.namingway.commands.rename.list.RoleList;
 import de.chojo.namingway.configuration.ConfigFile;
@@ -42,6 +44,12 @@ public class Rename implements SlashProvider<Slash> {
                                     .handler(new ChannelList(config)))
                             .subCommand(sub("roles", "list roles changes")
                                     .handler(new RoleList(config))))
+                    .group(group("additional", "Manage additional names")
+                            .subCommand(sub("add", "Add additional names")
+                                    .handler(new AddName(config))
+                                    .argument(text("name", "name to add").asRequired()))
+                            .subCommand(sub("list", "List of additional names")
+                                    .handler(new ListNames(config))))
                     .build();
     }
 }

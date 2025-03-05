@@ -16,9 +16,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Users {
     public static Key<Users> KEY = Key.builder(
-            Path.of(SysVar.get("bot.usersdb", "BOT_USERS_DB").orElse("data/users.yaml")),
-            Users::new)
-            .build();
+                                              Path.of(SysVar.get("bot.usersdb", "BOT_USERS_DB").orElse("data/users.yaml")),
+                                              Users::new)
+                                      .build();
     private Map<Long, String> names = new HashMap<>();
     private List<String> additionalNames = new ArrayList<>();
 
@@ -50,5 +50,16 @@ public class Users {
         return additionalNames.get(ThreadLocalRandom.current().nextInt(additionalNames.size()));
     }
 
+    public void addAdditionalName(String name) {
+        if (additionalNames.contains(name)) return;
+        additionalNames.add(name);
+    }
 
+    public List<String> additionalNames() {
+        return Collections.unmodifiableList(additionalNames);
+    }
+
+    public boolean removeAdditionalName(String name) {
+        return additionalNames.remove(name) ;
+    }
 }
