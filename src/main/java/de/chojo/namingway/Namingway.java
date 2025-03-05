@@ -2,7 +2,7 @@ package de.chojo.namingway;
 
 import de.chojo.jdautil.interactions.dispatching.InteractionHub;
 import de.chojo.namingway.commands.Rollback;
-import de.chojo.namingway.commands.Status;
+import de.chojo.namingway.commands.Release;
 import de.chojo.namingway.configuration.ConfigFile;
 import de.chojo.namingway.services.MentionListener;
 import de.chojo.namingway.util.Threading;
@@ -37,7 +37,7 @@ public class Namingway {
         InteractionHub.builder(shardManager)
                 .testMode()
                 .withCommands(new Rollback(config),
-                        new Status(config))
+                        new Release(config))
                 .build();
     }
 }

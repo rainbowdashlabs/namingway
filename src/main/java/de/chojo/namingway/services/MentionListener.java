@@ -60,9 +60,14 @@ public class MentionListener extends ListenerAdapter {
     }
 
     private void diceNames(Member first, Member second) {
-        if (current().nextDouble() <= 0.1) {
-            // Bring back a lost name
-            switchNames(config.secondary(Users.KEY).randomName(), current().nextDouble() >= 0.5 ? first : second);
+        if (current().nextDouble() <= 0.5) {
+            if (current().nextDouble() <= 0.2) {
+                // Bring back a lost name
+                switchNames(config.secondary(Users.KEY).randomName(), current().nextDouble() >= 0.5 ? first : second);
+            }else {
+                // Introduce an additional name
+                switchNames(config.secondary(Users.KEY).randomAdditionalName(), current().nextDouble() >= 0.5 ? second : first);
+            }
             return;
         }
         if (current().nextDouble() >= 0.5) {

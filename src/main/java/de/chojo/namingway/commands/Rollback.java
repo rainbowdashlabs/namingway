@@ -6,10 +6,15 @@ import de.chojo.jdautil.interactions.slash.provider.SlashProvider;
 import de.chojo.jdautil.interactions.slash.structure.handler.SlashHandler;
 import de.chojo.jdautil.wrapper.EventContext;
 import de.chojo.namingway.configuration.ConfigFile;
+import de.chojo.namingway.db.Channels;
+import de.chojo.namingway.db.RenamedRegistry;
+import de.chojo.namingway.db.Roles;
 import de.chojo.namingway.db.Users;
 import dev.chojo.ocular.Configurations;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
@@ -51,7 +56,7 @@ public class Rollback implements SlashProvider<Slash>, SlashHandler {
             return;
         }
         active = true;
-        event.reply("Rollback in progress").setEphemeral(true).queue();
+        event.reply("Rolling back user named").setEphemeral(true).queue();
         Map<Long, String> names = config.secondary(Users.KEY).names();
         names = new HashMap<>(names);
         Guild guild = event.getGuild();
@@ -64,6 +69,26 @@ public class Rollback implements SlashProvider<Slash>, SlashHandler {
                 // ignore
             }
         }
+
+        event.getInteraction().getHook().editOriginal("Rolling back role names").queue();
+        RenamedRegistry roles = config.secondary(Roles.KEY);
+        for (Map.Entry<Long, String> entry : roles.originals().entrySet()) {
+            Role role = guild.getRoleById(entry.getKey());
+            if (role == null) continue;
+            role.getManager().setName(entry.getValue()).complete();
+        }
+
+        event.getInteraction().getHook().editOriginal("Rolling back channel names").queue();
+        RenamedRegistry channels = config.secondary(Channels.KEY);
+        for (Map.Entry<Long, String> entry : channels.originals().entrySet()) {
+            GuildChannel channel = guild.getGuildChannelById(entry.getKey());
+            if (channel == null) continue;
+            channel.getManager().setName(entry.getValue()).complete();
+        }
+
         active = false;
+        config.main().active(false);
+        config.save();
+        event.getInteraction().getHook().editOriginal("Rollback finished").queue();
     }
 }
