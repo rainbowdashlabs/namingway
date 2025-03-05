@@ -16,6 +16,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 import java.util.Map;
 
+import static de.chojo.jdautil.interactions.slash.Argument.bool;
+
 public class Release implements SlashProvider<Slash>, SlashHandler {
     private final Configurations<ConfigFile> config;
 
@@ -30,6 +32,7 @@ public class Release implements SlashProvider<Slash>, SlashHandler {
                     .guildOnly()
                     .unlocalized()
                     .command(this)
+                    .argument(bool("confirm", "true to confirm").asRequired())
                     .build();
     }
 
@@ -37,6 +40,11 @@ public class Release implements SlashProvider<Slash>, SlashHandler {
     public void onSlashCommand(SlashCommandInteractionEvent event, EventContext context) {
         config.main().active(true);
         config.save();
+
+        if (!event.getOption("confirm").getAsBoolean()) {
+            event.reply("Please confirm").setEphemeral(true).queue();
+            return;
+        }
 
         event.reply("Adjusting role names").setEphemeral(true).queue();
 
