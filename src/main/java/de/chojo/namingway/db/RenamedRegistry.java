@@ -1,9 +1,12 @@
 package de.chojo.namingway.db;
 
 import net.dv8tion.jda.api.entities.ISnowflake;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RenamedRegistry {
@@ -26,7 +29,15 @@ public class RenamedRegistry {
         return Collections.unmodifiableMap(newNames);
     }
 
+    public Collection<Long> renamedIds() {
+        return newNames.keySet();
+    }
+
     public Map<Long, String> originals() {
         return Collections.unmodifiableMap(originals);
+    }
+
+    public String newName(ISnowflake e) {
+        return newNames.get(e.getIdLong());
     }
 }
