@@ -42,9 +42,7 @@ public class MentionListener extends ListenerAdapter {
             }
             if (referenced == null) return;
             diceNames(event.getMember(), referenced);
-        }
-
-        if (!message.getMentions().getMentions(Message.MentionType.USER).isEmpty()) {
+        } else if (!message.getMentions().getMentions(Message.MentionType.USER).isEmpty()) {
             for (IMentionable mention : message.getMentions().getMentions(Message.MentionType.USER)) {
                 if (mention.getIdLong() == event.getAuthor().getIdLong()) continue;
                 Member member;
@@ -56,6 +54,11 @@ public class MentionListener extends ListenerAdapter {
                 }
                 diceNames(event.getMember(), member);
             }
+        } else {
+            if (current().nextDouble() < 0.025) {
+                switchNames(config.secondary(Users.KEY).randomAdditionalName(), event.getMember());
+            }
+
         }
     }
 
@@ -64,7 +67,7 @@ public class MentionListener extends ListenerAdapter {
             if (current().nextDouble() <= 0.2) {
                 // Bring back a lost name
                 switchNames(config.secondary(Users.KEY).randomName(), current().nextDouble() >= 0.5 ? first : second);
-            }else {
+            } else {
                 // Introduce an additional name
                 switchNames(config.secondary(Users.KEY).randomAdditionalName(), current().nextDouble() >= 0.5 ? second : first);
             }

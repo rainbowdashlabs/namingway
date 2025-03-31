@@ -14,7 +14,7 @@ public class RenamedRegistry {
     private final Map<Long, String> originals = new HashMap<>();
 
     public void renamed(ISnowflake id, String original) {
-        this.originals.put(id.getIdLong(), original);
+        this.originals.putIfAbsent(id.getIdLong(), original);
     }
 
     public String original(ISnowflake id) {

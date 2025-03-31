@@ -19,9 +19,14 @@ public class Role implements SlashHandler {
     @Override
     public void onSlashCommand(SlashCommandInteractionEvent slash, EventContext eventContext) {
         try (var conf = config.secondaryWrapped(Roles.KEY)) {
-            ISnowflake snowflake = slash.getOption("role", OptionMapping::getAsRole);
+            net.dv8tion.jda.api.entities.Role snowflake = slash.getOption("role", OptionMapping::getAsRole);
             String name = slash.getOption("name", OptionMapping::getAsString);
             conf.config().rename(snowflake, name);
+
+            if (config.main().active()) {
+                conf.config().renamed(snowflake, snowflake.getName());
+                snowflake.getManager().setName(name).complete();
+            }
             slash.reply("Saved").setEphemeral(true).queue();
         }
     }
