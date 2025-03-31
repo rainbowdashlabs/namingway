@@ -51,10 +51,7 @@ public class Rollback implements SlashProvider<Slash>, SlashHandler {
             event.reply("Rollback already in progress").setEphemeral(true).queue();
             return;
         }
-        if (config.main().active()) {
-            event.reply("Set state to inactive first.").setEphemeral(true).queue();
-            return;
-        }
+        config.main().active(false);
         active = true;
         event.reply("Rolling back user named").setEphemeral(true).queue();
         Map<Long, String> names = config.secondary(Users.KEY).names();

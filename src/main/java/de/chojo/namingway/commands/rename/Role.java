@@ -22,7 +22,7 @@ public class Role implements SlashHandler {
             ISnowflake snowflake = slash.getOption("role", OptionMapping::getAsRole);
             String name = slash.getOption("name", OptionMapping::getAsString);
             conf.config().rename(snowflake, name);
-            slash.reply("Saved").queue();
+            slash.reply("Saved").setEphemeral(true).queue();
         }
     }
 }

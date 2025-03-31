@@ -13,12 +13,15 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.slf4j.Logger;
 
 import java.util.Map;
 
 import static de.chojo.jdautil.interactions.slash.Argument.bool;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class Release implements SlashProvider<Slash>, SlashHandler {
+    private static final Logger log = getLogger(Release.class);
     private final Configurations<ConfigFile> config;
 
     public Release(Configurations<ConfigFile> config) {
@@ -38,13 +41,13 @@ public class Release implements SlashProvider<Slash>, SlashHandler {
 
     @Override
     public void onSlashCommand(SlashCommandInteractionEvent event, EventContext context) {
-        config.main().active(true);
-        config.save();
-
         if (!event.getOption("confirm").getAsBoolean()) {
             event.reply("Please confirm").setEphemeral(true).queue();
             return;
         }
+
+        config.main().active(true);
+        config.save();
 
         event.reply("Adjusting role names").setEphemeral(true).queue();
 
@@ -54,7 +57,19 @@ public class Release implements SlashProvider<Slash>, SlashHandler {
             Role role = guild.getRoleById(entry.getKey());
             if (role == null) continue;
             roles.renamed(role, role.getName());
-            role.getManager().setName(entry.getValue()).complete();
+            while (true) {
+                try {
+                    role.getManager().setName(entry.getValue()).complete();
+                } catch (Exception e) {
+                    log.error("Failed to rename role", e);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                    }
+                    continue;
+                }
+                break;
+            }
         }
 
         event.getInteraction().getHook().editOriginal("Adjusting channel names").queue();
@@ -63,7 +78,19 @@ public class Release implements SlashProvider<Slash>, SlashHandler {
             GuildChannel channel = guild.getGuildChannelById(entry.getKey());
             if (channel == null) continue;
             roles.renamed(channel, channel.getName());
-            channel.getManager().setName(entry.getValue()).complete();
+            while (true) {
+                try {
+                    channel.getManager().setName(entry.getValue()).complete();
+                } catch (Exception e) {
+                    log.error("Failed to rename channel", e);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                    }
+                    continue;
+                }
+                break;
+            }
         }
 
         event.getInteraction().getHook().editOriginal("Bot activated").queue();
