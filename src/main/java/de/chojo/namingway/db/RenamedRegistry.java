@@ -16,6 +16,9 @@ public class RenamedRegistry {
     public void renamed(ISnowflake id, String original) {
         this.originals.putIfAbsent(id.getIdLong(), original);
     }
+    public void renamed(long id, String original) {
+        this.originals.putIfAbsent(id, original);
+    }
 
     public String original(ISnowflake id) {
         return originals.get(id.getIdLong());

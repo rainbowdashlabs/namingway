@@ -77,7 +77,7 @@ public class Release implements SlashProvider<Slash>, SlashHandler {
         for (Map.Entry<Long, String> entry : channels.newNames().entrySet()) {
             GuildChannel channel = guild.getGuildChannelById(entry.getKey());
             if (channel == null) continue;
-            roles.renamed(channel, channel.getName());
+            channels.renamed(channel, channel.getName());
             while (true) {
                 try {
                     channel.getManager().setName(entry.getValue()).complete();
@@ -92,6 +92,8 @@ public class Release implements SlashProvider<Slash>, SlashHandler {
                 break;
             }
         }
+
+        config.save();
 
         event.getInteraction().getHook().editOriginal("Bot activated").queue();
     }

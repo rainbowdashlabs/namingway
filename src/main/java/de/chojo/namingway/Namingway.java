@@ -1,6 +1,7 @@
 package de.chojo.namingway;
 
 import de.chojo.jdautil.interactions.dispatching.InteractionHub;
+import de.chojo.namingway.commands.Reconstruct;
 import de.chojo.namingway.commands.Rename;
 import de.chojo.namingway.commands.Rollback;
 import de.chojo.namingway.commands.Release;
@@ -40,7 +41,8 @@ public class Namingway {
                 .withCommands(
                         new Rollback(config),
                         new Release(config),
-                        new Rename(config))
+                        new Rename(config),
+                        new Reconstruct(config))
                 .build();
     }
 }
