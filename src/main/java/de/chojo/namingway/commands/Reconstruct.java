@@ -34,24 +34,24 @@ public class Reconstruct implements SlashProvider<Slash>, SlashHandler {
                                             .user(slash.getGuild().getSelfMember())
                                             .complete();
 
-        try (var conf = config.secondaryWrapped(Channels.KEY)) {
-            for (AuditLogEntry entry : channels) {
-                if (entry.getTimeCreated().isAfter(OffsetDateTime.now().minus(minutes, ChronoUnit.MINUTES))) continue;
-                conf.config().renamed(entry.getTargetIdLong(), entry.getChangeByKey(AuditLogKey.CHANNEL_NAME).getOldValue());
-            }
+        var conf = config.secondary(Channels.KEY);
+        for (AuditLogEntry entry : channels) {
+            if (entry.getTimeCreated().isAfter(OffsetDateTime.now().minus(minutes, ChronoUnit.MINUTES))) continue;
+            conf.renamed(entry.getTargetIdLong(), entry.getChangeByKey(AuditLogKey.CHANNEL_NAME).getOldValue());
         }
+
 
         List<AuditLogEntry> roles = slash.getGuild().retrieveAuditLogs()
                                          .type(ActionType.ROLE_UPDATE)
                                          .user(slash.getGuild().getSelfMember())
                                          .complete();
-        try (var conf = config.secondaryWrapped(Roles.KEY)) {
-            for (AuditLogEntry entry : roles) {
-                if (entry.getTimeCreated().isAfter(OffsetDateTime.now().minus(minutes, ChronoUnit.MINUTES))) continue;
-                conf.config().renamed(entry.getTargetIdLong(), entry.getChangeByKey(AuditLogKey.ROLE_NAME).getOldValue());
-            }
+        conf = config.secondary(Roles.KEY);
+        for (AuditLogEntry entry : roles) {
+            if (entry.getTimeCreated().isAfter(OffsetDateTime.now().minus(minutes, ChronoUnit.MINUTES))) continue;
+            conf.renamed(entry.getTargetIdLong(), entry.getChangeByKey(AuditLogKey.ROLE_NAME).getOldValue());
         }
 
+        config.save();
     }
 
     @Override
