@@ -6,7 +6,7 @@ dependencyResolutionManagement {
             // misc
             library("jetbrains-annotations", "org.jetbrains:annotations:26.0.2")
 
-            version("log4j", "2.24.3")
+            version("log4j", "2.25.0")
 
             library("slf4j-api", "org.slf4j:slf4j-api:2.0.17")
             library("log4j-core", "org.apache.logging.log4j", "log4j-core").versionRef("log4j")
