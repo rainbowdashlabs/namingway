@@ -30,7 +30,7 @@ dependencies {
     implementation("dev.chojo", "ocular", "1.0.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
 
-    testImplementation(platform("org.junit:junit-bom:6.0.0"))
+    testImplementation(platform("org.junit:junit-bom:6.0.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 java {
