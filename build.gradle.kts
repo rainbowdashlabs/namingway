@@ -27,7 +27,7 @@ dependencies {
         exclude("org.apache.logging.log4j")
     }
 
-    implementation("dev.chojo", "ocular", "1.0.2")
+    implementation("dev.chojo", "ocular", "2.3.0")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
 
     testImplementation(platform("org.junit:junit-bom:6.1.3"))
