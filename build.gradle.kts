@@ -17,7 +17,7 @@ repositories {
 dependencies {
 
         //discord
-    implementation("de.chojo", "cjda-util", "2.15.0+jda-6.3.0") {
+    implementation("de.chojo", "cjda-util", "3.0.0") {
         exclude(group = "club.minnced", module = "opus-java")
     }
 
@@ -27,7 +27,7 @@ dependencies {
         exclude("org.apache.logging.log4j")
     }
 
-    implementation("dev.chojo", "ocular", "1.0.2")
+    implementation("dev.chojo", "ocular", "2.4.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
 
     testImplementation(platform("org.junit:junit-bom:6.1.3"))
